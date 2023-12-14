@@ -26,7 +26,7 @@ useRouter.get("/:id", (req, res) => {
 
 useRouter.post("/", (req, res) => {
 
-    const { title, description, price, thumbnail, code, stock } = req.body
+    const { title, description, price, thumbnail, code, stock, state, category} = req.body
 
     if (!code || !title || !price) {
         res.status(400).json({ error: "Faltan datos minimos (title, code, price)" })
@@ -35,11 +35,13 @@ useRouter.post("/", (req, res) => {
 
         const result = manager.addProduct({
             title,
-            description,
+            state: state ?? true,
+            description: description ?? "",
+            category: category ?? "", 
             price,
-            thumbnail,
+            thumbnail: thumbnail ?? [],
             code,
-            stock
+            stock: stock ?? 0
         })
 
         if(result){
