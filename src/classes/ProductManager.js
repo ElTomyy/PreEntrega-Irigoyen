@@ -1,3 +1,4 @@
+import { CreateFile, ReadFile, UpdateFile, DeleteFile } from "../data/managerProductsData.js";
 
 class ProductManager {
 
@@ -16,6 +17,7 @@ class ProductManager {
                 ...objeto,
                 id: this.SetId
             })
+            CreateFile(this.products)
             return true
         }
         else {
@@ -52,6 +54,7 @@ class ProductManager {
                 ...this.products[index],
                 ...nuevoObjeto
             }
+            CreateFile(this.products)
             return true
         }
         else {
@@ -65,6 +68,7 @@ class ProductManager {
         const index = this.products.findIndex(e => e.id == id)
         if (index !== -1) {
             this.products.splice(index, 1)
+            CreateFile(this.products)
             return true
         }
         else {

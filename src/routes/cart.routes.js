@@ -1,17 +1,23 @@
 import { Router } from "express";
-import CartManager from "../CartManager.js";
+import CartManager from "../classes/CartManager.js";
+import { CreateFile, UpdateFile, ReadFile, DeleteFile } from "../data/managerCartData.js"
 
 const useRouter = Router()
 
-let currentId = 1
-const mainCart = []
+const mainCartData = await ReadFile()
+console.log(mainCartData)
+const mainCart = mainCartData.map(e => new CartManager(e))
+console.log(mainCart)
+let currentId = mainCart.length
 
 useRouter.post("/", (req, res) =>{
 
-    const cart = new CartManager()
-    cart.cartId = currentId
     currentId++
+    const obj = {}
+    const cart = new CartManager(obj)
+    cart.cartId = currentId
     mainCart.push(cart)
+    CreateFile(mainCart)
     res.status(201).json({ message: "Carrito creado con exito", carrito: mainCart})
 })
 
@@ -40,6 +46,7 @@ useRouter.post("/:cid/product/:pid", (req, res) =>{
     const result = mainCart[index].addProductCart(pid)
 
     if(result){
+        CreateFile(mainCart)
         res.status(201).json({message: "Producto agregado con exito"})
     }
     else{

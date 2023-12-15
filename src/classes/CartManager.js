@@ -1,9 +1,9 @@
 
 class CartManager{
 
-    constructor(){
-        this.cartId = 0,
-        this.products = []
+    constructor(obj){
+        this.cartId = obj.cartId || 0
+        this.products = obj.products || []
     }
 
     //Crear/Agregar un nuevo producto
@@ -28,11 +28,9 @@ class CartManager{
 
     }
 
-    //Recibir productos del carrito
-
-    getProduct(){
+    printId(){
+        return this.cartId
     }
-
 }
 
 export default CartManager

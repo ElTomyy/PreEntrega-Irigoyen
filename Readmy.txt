@@ -1,0 +1,1 @@
+Importante -----> En caso de borrar toda la data del archivo de almacenamiento json (products.json y cart.json) es necesario dejar un par de [] para que funcione correctamente

@@ -1,9 +1,12 @@
 import { Router } from "express";
-import ProductManager from "../ProductManager.js";
+import ProductManager from "../classes/ProductManager.js";
+import { ReadFile } from "../data/managerProductsData.js";
 
 const useRouter = Router()
 
 const manager = new ProductManager()
+manager.products = await ReadFile()
+manager.SetId = manager.products.length
 
 useRouter.get("/", (req, res) => {
 
