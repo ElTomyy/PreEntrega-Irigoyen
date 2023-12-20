@@ -4,31 +4,32 @@ import { CreateFile, UpdateFile, ReadFile, DeleteFile } from "../data/managerCar
 
 const useRouter = Router()
 
-const mainCartData = await ReadFile()
-console.log(mainCartData)
-const mainCart = mainCartData.map(e => new CartManager(e))
-console.log(mainCart)
-let currentId = mainCart.length
+const mainCartData = new CartManager()
+mainCartData.carts = await ReadFile()
+mainCartData.id = mainCartData.carts.length
+
 
 useRouter.post("/", (req, res) =>{
 
-    currentId++
-    const obj = {}
-    const cart = new CartManager(obj)
-    cart.cartId = currentId
-    mainCart.push(cart)
-    CreateFile(mainCart)
-    res.status(201).json({ message: "Carrito creado con exito", carrito: mainCart})
+    mainCartData.id = mainCartData.id + 1
+    const cart = {
+        cartId: mainCartData.id,
+        products: []
+    }
+    mainCartData.carts.push(cart)
+    console.log(mainCartData.id)
+    CreateFile(mainCartData.carts)
+    res.status(201).json({ message: "Carrito creado con exito", carrito: mainCartData.carts})
 })
 
 useRouter.get("/:cid", (req, res) =>{
 
     const { cid } = req.params
 
-    const index = mainCart.findIndex(e => e.cartId == cid)
+    const index = mainCartData.carts.findIndex(e => e.cartId == cid)
 
     if(index !== -1){
-        const result = mainCart[index]
+        const result = mainCartData.carts[index]
         res.status(201).json({ message: `Ejecucion exitosa carrito ${cid}`, cart: result})
     }
     else{
@@ -41,12 +42,10 @@ useRouter.post("/:cid/product/:pid", (req, res) =>{
 
     const { cid, pid } = req.params
 
-    const index = mainCart.findIndex(e => e.cartId == cid)
-
-    const result = mainCart[index].addProductCart(pid)
+    const result = mainCartData.addProductCart(cid, pid)
 
     if(result){
-        CreateFile(mainCart)
+        CreateFile(mainCartData.carts)
         res.status(201).json({message: "Producto agregado con exito"})
     }
     else{

@@ -1,36 +1,42 @@
 
-class CartManager{
+class CartManager {
 
-    constructor(obj){
-        this.cartId = obj.cartId || 0
-        this.products = obj.products || []
+    constructor() {
+        this.id = 0
+        this.carts = []
     }
 
     //Crear/Agregar un nuevo producto
 
-    addProductCart(id) {
-        const ids = this.products.map(e => e.productId)
-        if (!ids.includes(id)) {
-            this.products.push({
-                productId: id,
-                quantity: 1
-            })
-            return true
+    addProductCart(cid, pid) {
+
+        const cartIndex = this.carts.findIndex(e => e.cartId == cid)
+
+        if (cartIndex !== -1) {
+            const ids = this.carts[cartIndex].products.map(e => e.productId)
+
+            if (!ids.includes(pid)) {
+                this.carts[cartIndex].products.push({
+                    productId: pid,
+                    quantity: 1
+                })
+                return true
+            }
+            else {
+                const productIndex = this.carts[cartIndex].products.findIndex(e => e.productId == pid)
+                this.carts[cartIndex].products[productIndex].quantity++
+                return true
+            }
         }
-        else if(ids.includes(id)){
-            const index = this.products.findIndex(e => e.productId == id)
-            this.products[index].quantity++
-            return true
-        }
-        else{
+        else {
             return false
         }
 
     }
 
-    printId(){
+    printId() {
         return this.cartId
     }
-}
 
+}
 export default CartManager
