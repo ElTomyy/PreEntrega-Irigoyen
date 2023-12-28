@@ -10,7 +10,11 @@ manager.SetId = manager.products.length
 
 useRouter.get("/", (req, res) => {
 
-    res.status(201).json({ message: "Estos son los productos", data: manager.getProduct()})
+    //res.status(201).json({ message: "Estos son los productos", data: manager.getProduct()})
+
+    const productos = manager.getProduct()
+
+    res.render("home", {producto: productos, title: "Todos los productos"})
 })
 
 useRouter.get("/:id", (req, res) => {
@@ -19,7 +23,7 @@ useRouter.get("/:id", (req, res) => {
     const result = manager.getProductById(id)
 
     if(result){
-        res.status(201).json({message: "Producto encontrado", data: result})
+        res.render("productById", result)
     }
     else{
         res.status(400).json({error: "Producto no encontrado"})
@@ -39,8 +43,8 @@ useRouter.post("/", (req, res) => {
         const result = manager.addProduct({
             title,
             state: state ?? true,
-            description: description ?? "",
-            category: category ?? "", 
+            description: description ?? "Sin descripcion",
+            category: category ?? "Sin categoria", 
             price,
             thumbnail: thumbnail ?? [],
             code,

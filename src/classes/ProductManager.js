@@ -68,6 +68,11 @@ class ProductManager {
         const index = this.products.findIndex(e => e.id == id)
         if (index !== -1) {
             this.products.splice(index, 1)
+            this.SetId = 1
+            this.products.forEach(e =>{
+                e.id = this.SetId
+                this.SetId++
+            })
             CreateFile(this.products)
             return true
         }

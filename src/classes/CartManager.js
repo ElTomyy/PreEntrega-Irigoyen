@@ -1,4 +1,4 @@
-
+import { CreateFile } from "../data/managerCartData.js"
 class CartManager {
 
     constructor() {
@@ -6,6 +6,10 @@ class CartManager {
         this.carts = []
     }
 
+    addCart(object){
+        this.carts.push(object)
+        CreateFile(this.carts)
+    }
     //Crear/Agregar un nuevo producto
 
     addProductCart(cid, pid) {
@@ -20,11 +24,13 @@ class CartManager {
                     productId: pid,
                     quantity: 1
                 })
+                CreateFile(this.carts)
                 return true
             }
             else {
                 const productIndex = this.carts[cartIndex].products.findIndex(e => e.productId == pid)
                 this.carts[cartIndex].products[productIndex].quantity++
+                CreateFile(this.carts)
                 return true
             }
         }
